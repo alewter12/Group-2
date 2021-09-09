@@ -1,5 +1,5 @@
 # Group-2
-/*
+
 Project Name: Waterdog Email Client
 
 Languages used: TBD
@@ -20,6 +20,3 @@ through electronic mail.
 Project Objectives:
 develop a website capable of functioning as a basic email client for 
 multiple users, allowing users to submit text and images through email.
-
-
-/*
