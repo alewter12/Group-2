@@ -10,16 +10,21 @@ public class accountManager {
         //Any time a method of this class is called it will be called using this instance 
         accountManager acctManager = new accountManager(); 
         int menuInput = 0;
-        Scanner blue = new Scanner(System.in);
+        Scanner blue = new Scanner(System.in); //Scanners are named after colors 
+        Scanner red = new Scanner(System.in);
         do{
-            menuInput = acctManager.menu();
+            acctManager.menu();
+            menuInput = red.nextInt();
             switch(menuInput){
                 case 1:
                 System.out.println("Type in your desired username");
                 String userIn = blue.nextLine();
                 System.out.println("Type in your desired password");
                 String passIn = blue.nextLine();
-                acctManager.addAccount(userIn, passIn);
+                boolean addAcctFlag = acctManager.addAccount(userIn, passIn);
+                if (addAcctFlag == true){
+                    System.out.println("Account successfully created.");
+                }
                 break;
 
                 case 2: 
@@ -36,26 +41,44 @@ public class accountManager {
                 acctManager.logoutUser(userIn3);
                 break; 
 
+                case 4:
+                System.out.println("Enter your username");
+                String userIn4 = blue.nextLine();
+                acctManager.deleteAccount(userIn4);
+                System.out.println("Account Deleted");
+                break;
+
+                case 5:
+                System.out.println("Exiting Menu");
+                break;
+
                 default:
-                System.out.println("Exiting menu");
+                System.out.println("Invalid Input");
                 
             }
         }
-        while(menuInput != 6);
+        while(menuInput != 5);
         blue.close();
+        red.close();
     }
 
-    private void addAccount(String username, String password){
+    private boolean addAccount(String username, String password){
+
+        //Checking for preexisting account under username
+        if (accountList.containsKey(username) == true){
+            System.out.println("There is already an account under this username. Please choose another.");
+            return false;
+        }
+
         account newAccount = new account(username, password);
-        //need to search for preexisting usernames here 
-        //probably also need to change this to return a bool
         accountList.put(username, newAccount);
+
+        return true;
     }
 
     private void deleteAccount(String username){
         //The user needs to be logged in to use this function
         //this function needs to be revised to be able to delete emails and other account data
-
         accountList.remove(username);
     }
 
@@ -91,22 +114,15 @@ public class accountManager {
         return true;
     }
 
-    private int menu(){
-        int input = 0;
+    private void menu(){
         System.out.println("Menu");
         System.out.println("1. Create new account");
         System.out.println("2. Login to account");
         System.out.println("3. Logout of account");
-        System.out.println("5. Delete account ");
-        System.out.println("6. Exit menu ");
-        Scanner red = new Scanner(System.in); // This needs to be closed but I couldnt figure out how to do it in the method 
-        input = red.nextInt();//So the whole input process here might need to be moved to the main method
-        return input;
-        
+        System.out.println("4. Delete account");
+        System.out.println("5. Exit menu ");
     }
 }
-
-
 
 public class account {
     private String username; //This is without the @
@@ -152,3 +168,4 @@ public class account {
         return isLoggedIn;
     }
 }
+
